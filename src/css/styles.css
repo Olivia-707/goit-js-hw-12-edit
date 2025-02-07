@@ -29,19 +29,18 @@ body {
 
 /* Новый градиентный фон */
 
+
+
+/*
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
+  background: transparent;
 }
 
 body {
-  background: linear-gradient(135deg, #6dd5ed, #2193b0, #ff7eb3, #ffb347);
-  background-attachment: fixed;
-  /* Фон остаётся при прокрутке */
-  background-size: cover;
-  /* Растягиваем фон на весь экран */
   display: flex;
   flex-direction: column;
   min-width: 100vw;
@@ -49,6 +48,23 @@ body {
   margin: 0;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(135deg, #6dd5ed, #2193b0, #ff7eb3, #ffb347) no-repeat;
+  background-attachment: fixed;
+} */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+body:before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  inset: 0 0 0 0;
+  background: linear-gradient(135deg, #6dd5ed, #2193b0, #ff7eb3, #ffb347) no-repeat;
 }
 
 h1,
@@ -195,14 +211,25 @@ a {
 /*   loader   */
 
 /*   gallery   */
+
 .gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* 3 колонки */
+  gap: 24px;
+  /* Отступы между картинками */
+  justify-content: center;
+  max-width: 1200px;
+}
+
+/* .gallery {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
   justify-content: center;
   column-gap: 24px;
   max-width: 1200px;
-}
+} */
 
 /* Картинки в галерее */
 
@@ -226,28 +253,38 @@ a {
   max-width: 1200px;
 }
 
+.gallery-card {
+  width: 100%;
+  /* Полная ширина в колонке */
+}
 
 /* 
 .gallery-card {
   width: calc((100% - 48px) / 3);
 }
+*/
 
 .gallery-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-*/
-
-/* Стиль для карточек с эффектом матового стекла */
-
-.gallery-card {
-  width: calc((100% - 48px) / 3);
+  box-shadow: 0 12px 124px rgba(0, 0, 0, 0.2);
   background: rgba(255, 255, 255, 0.2);
-  /* Полупрозрачный фон */
   border-radius: 10px;
   padding: 15px;
   backdrop-filter: blur(10px);
-  /* Эффект матового стекла */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+/* Стиль для карточек с эффектом матового стекла */
+
+/*
+.gallery-card {
+  width: calc((100% - 48px) / 3);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 15px;
+  backdrop-filter: blur(10px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -255,7 +292,7 @@ a {
 .gallery-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-}
+} */
 
 /* Стиль для карточек с эффектом матового стекла */
 
