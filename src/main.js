@@ -30,7 +30,7 @@ const onSearchFormSubmit = async event => {
 
     if (searchedQuery === '') {
       iziToast.error({
-        message: 'Plese enter your request',
+        message: 'Please enter your request',
         position: 'topRight',
       });
       return;
@@ -40,13 +40,15 @@ const onSearchFormSubmit = async event => {
     loadBtn.classList.add('is-hidden');
     loader.classList.add('show-loader');
 
+    galleryEl.innerHTML = '';
+
     const { data } = await fetchPhotosByQuery(searchedQuery, page);
     totalHits = data.totalHits;
 
     if (data.total === 0) {
       iziToast.error({
         message:
-          'Sorry, there are no images matching your searh query. Please try again!',
+          'Sorry, there are no images matching your search query. Please try again!',
         position: 'topRight',
       });
 
@@ -106,7 +108,7 @@ const onLoadMoreBtn = async () => {
     if (page * perPage >= totalHits) {
       loadBtn.classList.add('is-hidden');
       iziToast.info({
-        message: "We're sorry, but you're reached the end of search results.",
+        message: "We're sorry, but you've reached the end of search results.",
         position: 'topRight',
       });
 
