@@ -39,7 +39,6 @@ const onSearchFormSubmit = async event => {
     page = 1;
     loadBtn.classList.add('is-hidden');
     loader.classList.add('show-loader');
-
     galleryEl.innerHTML = '';
 
     const { data } = await fetchPhotosByQuery(searchedQuery, page);
@@ -51,24 +50,22 @@ const onSearchFormSubmit = async event => {
           'Sorry, there are no images matching your search query. Please try again!',
         position: 'topRight',
       });
-
-      galleryEl.innerHTML = '';
       searchFormEl.reset();
-
+      searchedQuery = '';
       return;
     }
 
-    if (data.totalHits > 1) {
+    const galleryTemplate = data.hits.map(createGalleryCardTemplate).join('');
+    galleryEl.innerHTML = galleryTemplate;
+    lightbox.refresh();
+    searchFormEl.reset();
+
+    if (data.hits.length < perPage) {
+      loadBtn.classList.add('is-hidden');
+    } else {
       loadBtn.classList.remove('is-hidden');
       loadBtn.addEventListener('click', onLoadMoreBtn);
     }
-
-    const galleryTemplate = data.hits
-      .map(el => createGalleryCardTemplate(el))
-      .join('');
-
-    galleryEl.innerHTML = galleryTemplate;
-    lightbox.refresh();
   } catch (err) {
     console.log(err);
   } finally {
@@ -80,17 +77,11 @@ searchFormEl.addEventListener('submit', onSearchFormSubmit);
 
 const onLoadMoreBtn = async () => {
   try {
-    setTimeout(() => {
-      loader.classList.remove('show-loader');
-    }, 500);
     loader.classList.add('show-loader');
     page++;
 
     const { data } = await fetchPhotosByQuery(searchedQuery, page);
-
-    const galleryTemplate = data.hits
-      .map(el => createGalleryCardTemplate(el))
-      .join('');
+    const galleryTemplate = data.hits.map(createGalleryCardTemplate).join('');
     galleryEl.insertAdjacentHTML('beforeend', galleryTemplate);
     lightbox.refresh();
     loader.classList.remove('show-loader');
@@ -105,16 +96,13 @@ const onLoadMoreBtn = async () => {
       behavior: 'smooth',
     });
 
-    if (page * perPage >= totalHits) {
+    if (page * perPage >= totalHits || data.hits.length < perPage) {
       loadBtn.classList.add('is-hidden');
       iziToast.info({
         message: "We're sorry, but you've reached the end of search results.",
         position: 'topRight',
       });
-
-      if (!loadBtn.classList.contains('is-hidden')) {
-        loadBtn.removeEventListener('click', onLoadMoreBtn);
-      }
+      loadBtn.removeEventListener('click', onLoadMoreBtn);
     }
   } catch (err) {
     console.log(err);

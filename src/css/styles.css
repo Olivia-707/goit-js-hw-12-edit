@@ -193,18 +193,6 @@ a {
   }
 }
 
-/*
-.loader {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
-  letter-spacing: 0.04em;
-  color: #2e2f42;
-
-  display: none;
-}
-*/
-
 .show-loader {
   display: block;
 }
